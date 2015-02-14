@@ -32,7 +32,7 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
 				if(not os.path.isdir(repository['path'])):
 					print "Directory %s not found" % repository['path']
 					sys.exit(2)
-				if(not os.path.isdir(repository['path'] + '/.git')):
+				if not os.path.isdir(os.path.join(repository['path'], '/.git')) and not os.path.isdir(os.path.join(repository['path'], 'objects')):
 					print "Directory %s is not a Git repository" % repository['path']
 					sys.exit(2)
 
