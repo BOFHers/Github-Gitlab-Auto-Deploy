@@ -153,27 +153,10 @@ class GitAutoDeployMain:
 				self.kill_them_all()
 
 		if(GitAutoDeploy.daemon):
-			# Fork the right way: http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way/
 			pid = os.fork()
 			if(pid > 0):
 				sys.exit(0)
 			os.setsid()
-			pid = os.fork()
-			if(pid > 0):
-				sys.exit(0)
-			import resource
-			maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
-			if(maxfd == resource.RLIM_INFINITY):
-				maxfd = MAXFD
-
-			for fd in range(0, maxfd):
-				try:
-					os.close(fd)
-				except OSError:
-					pass
-			os.open("/dev/null", os.O_RDWR)
-			os.dup2(0, 1)
-			os.dup2(0, 2)
 
 		self.create_pidfile()
 
@@ -274,7 +257,6 @@ class GitAutoDeployMain:
 
 	def signal_handler(self, signum, frame):
 		self.stop()
-
 		if(signum == 1):
 			self.run()
 			return
