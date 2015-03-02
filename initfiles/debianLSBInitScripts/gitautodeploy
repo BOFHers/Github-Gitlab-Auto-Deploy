@@ -68,10 +68,10 @@ do_start()
 		chmod g-w,o-rwx $RUNDIR
 	fi
 
-	start-stop-daemon --start --quiet --chdir $PWD --pidfile $PIDFILE --startas $DAEMON \
+	start-stop-daemon --start --quiet --background --chdir $PWD --pidfile $PIDFILE --startas $DAEMON \
 		--name $NAME --test > /dev/null \
 		|| return 1
-	start-stop-daemon --start --quiet --chdir $PWD --pidfile $PIDFILE --startas $DAEMON \
+	start-stop-daemon --start --quiet --background --chdir $PWD --pidfile $PIDFILE --startas $DAEMON \
 		--name $NAME --umask 0027 --chuid $DAEMON_UID:$DAEMON_GID -- $OPTIONS \
 		|| return 2
 }
